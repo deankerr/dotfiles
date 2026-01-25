@@ -1,0 +1,76 @@
+# ~/.zshrc - Main zsh configuration
+
+###########################################
+# HISTORY
+###########################################
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+
+setopt EXTENDED_HISTORY       # Write timestamps to history
+setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicates first when trimming
+setopt HIST_IGNORE_DUPS       # Don't record duplicates
+setopt HIST_IGNORE_SPACE      # Don't record commands starting with space
+setopt HIST_VERIFY            # Show before executing history commands
+setopt SHARE_HISTORY          # Share history between sessions
+
+###########################################
+# PATH - Core
+###########################################
+
+# Homebrew (must be early)
+{{- if eq .chezmoi.os "darwin" }}
+export BREW_PREFIX="/opt/homebrew"
+{{- else }}
+export BREW_PREFIX="/home/linuxbrew/.linuxbrew"
+{{- end }}
+export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+FPATH="$BREW_PREFIX/share/zsh/site-functions:${FPATH}"
+
+# User bins
+[[ -d "$HOME/bin" ]] && export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+###########################################
+# PLUGINS - Antidote
+###########################################
+
+[[ -d "$HOME/.antidote" ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+source "$HOME/.antidote/antidote.zsh"
+antidote load "$HOME/.config/zsh/plugins.txt"
+
+###########################################
+# TOOLS - Core
+###########################################
+
+# zoxide (smart cd)
+eval "$(zoxide init zsh)"
+
+# fzf keybindings (Ctrl+R history, Ctrl+T files, Alt+C cd)
+[[ -f "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh" ]] && source "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+
+# starship prompt (keep last in tools - modifies prompt)
+eval "$(starship init zsh)"
+
+###########################################
+# USER CONFIG
+###########################################
+
+source "$HOME/.config/zsh/env.zsh"
+source "$HOME/.config/zsh/aliases.zsh"
+[[ "$OSTYPE" == linux* ]] && source "$HOME/.config/zsh/aliases.linux.zsh"
+[[ -f "$HOME/.config/zsh/env.local.zsh" ]] && source "$HOME/.config/zsh/env.local.zsh"
+[[ -f "$HOME/.config/zsh/aliases.local.zsh" ]] && source "$HOME/.config/zsh/aliases.local.zsh"
+
+###########################################
+# TOOLS - Optional (installers may append below)
+###########################################
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+[[ -d "$BUN_INSTALL" ]] && export PATH="$BUN_INSTALL/bin:$PATH"
+[[ -s "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"
+
+# opencode
+[[ -d "$HOME/.opencode/bin" ]] && export PATH="$HOME/.opencode/bin:$PATH"

@@ -1,0 +1,10 @@
+# Antidote plugins
+
+# fzf-tab - fuzzy completion
+Aloxaf/fzf-tab
+
+# Autosuggestions
+zsh-users/zsh-autosuggestions
+
+# Syntax highlighting (must be last)
+zsh-users/zsh-syntax-highlighting
