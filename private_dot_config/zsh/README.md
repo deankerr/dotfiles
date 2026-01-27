@@ -62,7 +62,9 @@ Defined in `*.local.zsh` files (not synced).
 └── README.md               # This file [synced]
 ```
 
-## Bootstrap on new machine
+## Bootstrap
+
+### macOS
 
 ```bash
 # Install homebrew
@@ -76,4 +78,29 @@ brew install starship zoxide fzf
 
 # Install optional tools
 brew install micro eza gomi yazi pnpm
+```
+
+### Ubuntu/Debian
+
+```bash
+# Install zsh and make it default
+sudo apt update && sudo apt install -y zsh git curl
+chsh -s $(which zsh)
+
+# Install homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Add homebrew to PATH for this session
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# Install chezmoi and apply dotfiles
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply YOUR_GITHUB_USERNAME
+
+# Install required tools
+brew install starship zoxide fzf
+
+# Install optional tools (skip gomi/yazi if not needed on servers)
+brew install micro eza
+
+# Log out and back in (or reboot) to use zsh
 ```

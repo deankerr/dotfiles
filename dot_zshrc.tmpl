@@ -33,6 +33,12 @@ FPATH="$BREW_PREFIX/share/zsh/site-functions:${FPATH}"
 export PATH="$HOME/.local/bin:$PATH"
 
 ###########################################
+# COMPLETIONS
+###########################################
+
+autoload -Uz compinit && compinit
+
+###########################################
 # PLUGINS - Antidote
 ###########################################
 
