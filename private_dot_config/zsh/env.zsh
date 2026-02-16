@@ -1,7 +1,7 @@
 # Shared environment variables (synced across machines)
 
 # Editor
-export EDITOR="micro"
+export EDITOR="fresh"
 
 # Shell preferences
 export PROMPT_EOL_MARK=""

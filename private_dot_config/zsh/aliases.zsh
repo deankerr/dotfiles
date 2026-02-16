@@ -92,6 +92,7 @@ fi
 # File transfer
 alias rsync-cp='rsync --compress --human-readable --links --partial --progress --recursive --times'
 alias rsync-mv='rsync-cp --remove-source-files'
+alias rsync-web='rsync-cp --exclude node_modules --exclude .next --exclude dist --exclude build --exclude .turbo --exclude .cache --exclude .parcel-cache --exclude .nuxt --exclude .output --exclude .vercel --exclude .env.local'
 
 # Dates
 alias isodate_local="date +%Y-%m-%dT%H:%M:%S%z"

@@ -1,5 +1,15 @@
 # ~/.zshrc - Main zsh configuration
 
+# * Ghostty terminfo (often missing in remote/VM shells)
+[[ "$TERM" == "xterm-ghostty" ]] && export TERM=xterm-256color
+
+###########################################
+# SHELL OPTIONS
+###########################################
+
+setopt AUTO_CD    # Type directory name to cd into it
+setopt NO_BEEP    # Disable terminal bell
+
 ###########################################
 # HISTORY
 ###########################################
@@ -13,6 +23,7 @@ setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicates first when trimming
 setopt HIST_IGNORE_DUPS       # Don't record duplicates
 setopt HIST_IGNORE_SPACE      # Don't record commands starting with space
 setopt HIST_VERIFY            # Show before executing history commands
+setopt HIST_REDUCE_BLANKS     # Strip extra whitespace before saving
 setopt SHARE_HISTORY          # Share history between sessions
 
 ###########################################
@@ -36,7 +47,11 @@ export PATH="$HOME/.local/bin:$PATH"
 # COMPLETIONS
 ###########################################
 
+[[ -d "$HOME/.zfunc" ]] && fpath+=("$HOME/.zfunc")
 autoload -Uz compinit && compinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' special-dirs true
 
 ###########################################
 # PLUGINS - Antidote
