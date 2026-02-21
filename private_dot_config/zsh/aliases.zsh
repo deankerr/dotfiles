@@ -1,66 +1,6 @@
 # Aliases and functions
 
 ###########################################
-# GIT HELPERS & ALIASES
-###########################################
-
-# Get current branch name
-git_current_branch() {
-  git rev-parse --abbrev-ref HEAD 2>/dev/null
-}
-
-# Get main branch (main, master, trunk, etc.)
-git_main_branch() {
-  command git rev-parse --git-dir &>/dev/null || return
-  for ref in refs/{heads,remotes/{origin,upstream}}/{main,trunk,mainline,default,master}; do
-    if command git show-ref -q --verify "$ref"; then
-      echo "${ref:t}"
-      return 0
-    fi
-  done
-  echo master
-}
-
-# Get develop branch
-git_develop_branch() {
-  command git rev-parse --git-dir &>/dev/null || return
-  for branch in dev devel develop development; do
-    if command git show-ref -q --verify "refs/heads/$branch"; then
-      echo "$branch"
-      return 0
-    fi
-  done
-  echo develop
-}
-
-# Status
-alias gst='git status'
-alias gss='git status --short'
-alias gsb='git status --short --branch'
-
-# Checkout / Switch
-alias gco='git checkout'
-alias gcb='git checkout -b'
-alias gcm='git checkout $(git_main_branch)'
-alias gcd='git checkout $(git_develop_branch)'
-
-# Push / Pull
-alias gp='git push'
-alias gl='git pull'
-alias gpf='git push --force-with-lease --force-if-includes'
-alias gpsup='git push --set-upstream origin $(git_current_branch)'
-
-# Diff
-alias gd='git diff'
-alias gds='git diff --staged'
-alias gdca='git diff --cached'
-
-# Commit
-alias gaa='git add --all'
-alias gcam='git commit --all --message'
-alias gcn!='git commit --verbose --no-edit --amend'
-
-###########################################
 # EDITORS
 ###########################################
 
@@ -81,24 +21,10 @@ if command -v gomi &>/dev/null; then
   alias real_rm="command rm"
 fi
 
-# eza (modern ls) - only if eza is installed
-if command -v eza &>/dev/null; then
-  alias ls='eza --icons'
-  alias ll='eza -lhF --icons --group-directories-first --git'
-  alias la='eza -lahF --icons --group-directories-first --git'
-  alias lt='eza --tree --icons --group-directories-first --git'
-fi
-
 # File transfer
 alias rsync-cp='rsync --compress --human-readable --links --partial --progress --recursive --times'
 alias rsync-mv='rsync-cp --remove-source-files'
 alias rsync-web='rsync-cp --exclude node_modules --exclude .next --exclude dist --exclude build --exclude .turbo --exclude .cache --exclude .parcel-cache --exclude .nuxt --exclude .output --exclude .vercel --exclude .env.local'
-
-# Dates
-alias isodate_local="date +%Y-%m-%dT%H:%M:%S%z"
-alias isodate_utc="date -u +%Y-%m-%dT%H:%M:%SZ"
-alias isodate_basic="date -u +%Y%m%dT%H%M%SZ"
-alias unixstamp="date +%s"
 
 # Navigation
 alias ..='cd ..'

@@ -57,6 +57,10 @@ zstyle ':completion:*' special-dirs true
 # PLUGINS - Antidote
 ###########################################
 
+# Helper functions for conditional plugin loading
+function is-macos() { [[ $OSTYPE == darwin* ]] }
+function is-linux() { [[ $OSTYPE == linux* ]] }
+
 [[ -d "$HOME/.antidote" ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
 source "$HOME/.antidote/antidote.zsh"
 antidote load "$HOME/.config/zsh/plugins.txt"
