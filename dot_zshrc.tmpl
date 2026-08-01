@@ -61,22 +61,29 @@ zstyle ':completion:*' special-dirs true
 function is-macos() { [[ $OSTYPE == darwin* ]] }
 function is-linux() { [[ $OSTYPE == linux* ]] }
 
-[[ -d "$HOME/.antidote" ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
-source "$HOME/.antidote/antidote.zsh"
-antidote load "$HOME/.config/zsh/plugins.txt"
+# Only load plugins and interactive tools in interactive shells
+# (VSCode resolves env via non-interactive zsh — plugins that use zle will fail)
+if [[ $- == *i* ]]; then
+  # Disable oh-my-zsh update prompt (antidote clones the full OMZ repo)
+  zstyle ':omz:update' mode disabled
 
-###########################################
-# TOOLS - Core
-###########################################
+  [[ -d "$HOME/.antidote" ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+  source "$HOME/.antidote/antidote.zsh"
+  antidote load "$HOME/.config/zsh/plugins.txt"
 
-# zoxide (smart cd)
-eval "$(zoxide init zsh)"
+  ###########################################
+  # TOOLS - Core
+  ###########################################
 
-# fzf keybindings (Ctrl+R history, Ctrl+T files, Alt+C cd)
-[[ -f "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh" ]] && source "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+  # zoxide (smart cd)
+  eval "$(zoxide init zsh)"
 
-# starship prompt (keep last in tools - modifies prompt)
-eval "$(starship init zsh)"
+  # fzf keybindings (Ctrl+R history, Ctrl+T files, Alt+C cd)
+  [[ -f "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh" ]] && source "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+
+  # starship prompt (keep last in tools - modifies prompt)
+  eval "$(starship init zsh)"
+fi
 
 ###########################################
 # USER CONFIG
@@ -99,3 +106,10 @@ export BUN_INSTALL="$HOME/.bun"
 
 # opencode
 [[ -d "$HOME/.opencode/bin" ]] && export PATH="$HOME/.opencode/bin:$PATH"
+
+# pnpm (global bin directory)
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
