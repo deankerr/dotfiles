@@ -1,8 +1,25 @@
 # Global mise config, shared by every machine.
 # ~/.config/mise/config.toml is a symlink to this file.
 
+[settings]
+# Use each project's package.json packageManager / devEngines version (no corepack)
+idiomatic_version_file_enable_tools = ["bun", "pnpm"]
+# Install npm: tools with bun
+npm.package_manager = "bun"
+
 [tools]
 node = "24"
 bun = "latest"
 pnpm = "latest"
 uv = "latest"
+
+# Global CLIs. Self-updating apps (codex, opencode) use their own installers instead.
+"npm:agent-browser" = "latest"
+"npm:oxfmt" = "latest"
+"npm:pm2" = "latest"
+"npm:portless" = "latest"
+"npm:typescript" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:vercel" = "latest"
+"npm:vibe-rules" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
