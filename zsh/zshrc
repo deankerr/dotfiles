@@ -1,0 +1,71 @@
+# ~/.zshrc: interactive shells. Shared by every machine via the dotfiles repo.
+# Aliases live in mise [shell_alias]. Machine-only lines go in ~/.config/zsh/local.zsh.
+# An installer that appends here writes into the dotfiles repo: move or discard it.
+
+# --- Options ---
+setopt AUTO_CD NO_BEEP AUTO_PUSHD PUSHD_IGNORE_DUPS
+export PROMPT_EOL_MARK=""
+export EDITOR="fresh"
+[[ $OSTYPE == darwin* ]] && export VISUAL="code" || export VISUAL="$EDITOR"
+
+# --- History (atuin owns search; zsh history stays as a fallback) ---
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000
+setopt EXTENDED_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_DUPS HIST_IGNORE_SPACE
+setopt HIST_VERIFY HIST_REDUCE_BLANKS SHARE_HISTORY
+
+# --- Completion ---
+typeset -U fpath
+fpath=(
+  "$HOME/.local/share/zsh/site-functions"
+  "$HOME/.grok/completions/zsh"
+  "$HOME/.orbstack/shell/completions/zsh"
+  ${BREW_PREFIX:+"$BREW_PREFIX/share/zsh/site-functions"}
+  $fpath
+)
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' special-dirs true
+autoload -Uz compinit
+_zcompdump="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+mkdir -p "${_zcompdump:h}"
+# Full security check once a day; otherwise trust the dump.
+if [[ -n $_zcompdump(#qN.mh-24) ]]; then compinit -C -d "$_zcompdump"; else compinit -d "$_zcompdump"; fi
+unset _zcompdump
+
+# --- Plugins (antidote) ---
+# fzf first: Ctrl+T files, Alt+C cd. fzf-tab then takes Tab back; atuin takes Ctrl+R later.
+[[ -t 0 && -t 1 ]] && source <(fzf --zsh)
+[[ -d "$HOME/.antidote" ]] || git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+source "$HOME/.antidote/antidote.zsh"
+antidote load "$HOME/.config/zsh/plugins.txt"
+
+# --- Functions (aliases cannot cd or take arguments) ---
+alias -- -='cd -'
+mkcd() { mkdir -p "$1" && cd "$1"; }
+e() { if (( $# )); then code "$@"; else code .; fi }
+y() {  # yazi, cd to its last directory on exit
+  local tmp="$(mktemp -t yazi-cwd.XXXXXX)" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [[ -n $cwd && $cwd != $PWD ]]; then builtin cd -- "$cwd"; fi
+  rm -f -- "$tmp"
+}
+
+# --- macOS ---
+if [[ $OSTYPE == darwin* ]]; then
+  export HOMEBREW_NO_ENV_HINTS=true HOMEBREW_DOWNLOAD_CONCURRENCY=auto
+  export TAILSCALE_BE_CLI=1  # the App Store Tailscale app contains the CLI
+  alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+fi
+
+# --- Tools ---
+eval "$(mise activate zsh)"
+
+eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"
+eval "$(oh-my-posh init zsh)"  # default theme
+
+# --- Machine-local overrides, then highlighting last ---
+[[ -r "$HOME/.config/zsh/local.zsh" ]] && source "$HOME/.config/zsh/local.zsh"
+eval "$(zsh-patina activate)"

@@ -1,0 +1,3 @@
+# Antidote plugins. compinit runs before these (fzf-tab needs it).
+Aloxaf/fzf-tab
+zsh-users/zsh-autosuggestions

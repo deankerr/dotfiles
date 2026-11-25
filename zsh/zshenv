@@ -1,0 +1,11 @@
+# ~/.zshenv: every zsh, including non-interactive ssh commands. Keep it to PATH.
+
+typeset -U path
+if [[ $OSTYPE == darwin* ]]; then
+  export BREW_PREFIX="/opt/homebrew"
+  path=("$BREW_PREFIX/bin" "$BREW_PREFIX/sbin" $path)
+fi
+# mise shims ahead of system and Homebrew runtimes. Explicit, not `mise activate --shims`:
+# that skips shims already on PATH, even when not first.
+path=("$HOME/.local/share/mise/shims" "$HOME/.local/bin" $path)
+export PATH

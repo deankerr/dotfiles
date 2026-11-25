@@ -1,0 +1,31 @@
+# ~/.zprofile: login shells. macOS path_helper (/etc/zprofile) reorders PATH after
+# ~/.zshenv, so the final order is set again here.
+
+typeset -U path
+if [[ $OSTYPE == darwin* ]]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+  [[ -r "$HOME/.vite-plus/env" ]] && source "$HOME/.vite-plus/env"
+  path=(
+    "$HOME/.local/share/mise/shims"
+    "$HOME/.vite-plus/bin"
+    "$HOME/.local/bin"
+    "$HOME/.grok/bin"
+    "$HOME/.opencode/bin"
+    "$PNPM_HOME/bin"
+    "$BREW_PREFIX/bin"
+    "$BREW_PREFIX/sbin"
+    "$HOME/.orbstack/bin"
+    $path
+  )
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+  path=(
+    "$HOME/.local/share/mise/shims"
+    "$HOME/.local/bin"
+    "$HOME/.grok/bin"
+    "$HOME/.opencode/bin"
+    "$PNPM_HOME/bin"
+    $path
+  )
+fi
+export PATH

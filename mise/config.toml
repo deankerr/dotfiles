@@ -13,7 +13,26 @@ bun = "latest"
 pnpm = "latest"
 uv = "latest"
 
-# Global CLIs. Self-updating apps (codex, opencode) use their own installers instead.
+# Shell and terminal CLIs. Self-updating apps (codex, opencode, herdr) use their own installers.
+atuin = "latest"
+bat = "latest"
+btop = { version = "latest", os = ["linux"] }  # aqua has no macOS build; Homebrew on the Mac
+eza = "latest"
+fd = "latest"
+fzf = "latest"
+fx = "latest"
+github-cli = "latest"
+jq = "latest"
+lazydocker = "latest"
+lazygit = "latest"
+oh-my-posh = "latest"
+ripgrep = "latest"
+yazi = "latest"
+zoxide = "latest"
+"github:sinelaw/fresh" = "latest"
+"github:michel-kraemer/zsh-patina" = "latest"
+
+# Global npm CLIs
 "npm:agent-browser" = "latest"
 "npm:oxfmt" = "latest"
 "npm:pm2" = "latest"
@@ -23,3 +42,47 @@ uv = "latest"
 "npm:vercel" = "latest"
 "npm:vibe-rules" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
+
+# Interactive aliases (bash and zsh, needs `mise activate`). Shell functions live in zshrc.
+[shell_alias]
+x = "exit"
+cc = "claude --dangerously-skip-permissions"
+# eza
+ls = "eza"
+ll = "eza -l"
+la = "eza -la"
+# git
+g = "git"
+ga = "git add"
+gaa = "git add --all"
+gb = "git branch"
+gbd = "git branch --delete"
+gcam = "git commit --all --message"
+gcb = "git checkout -b"
+gco = "git checkout"
+gl = "git pull"
+glg = "git log --stat"
+gm = "git merge"
+gp = "git push"
+gst = "git status"
+gstp = "git stash pop"
+gstu = "git stash push --include-untracked"
+# navigation
+".." = "cd .."
+"..." = "cd ../.."
+"...." = "cd ../../.."
+"....." = "cd ../../../.."
+d = "dirs -v"
+# rsync
+rsync-cp = "rsync --compress --human-readable --links --partial --progress --recursive --times"
+rsync-mv = "rsync --compress --human-readable --links --partial --progress --recursive --times --remove-source-files"
+rsync-web = "rsync --compress --human-readable --links --partial --progress --recursive --times --exclude node_modules --exclude .next --exclude dist --exclude build --exclude .turbo --exclude .cache --exclude .parcel-cache --exclude .nuxt --exclude .output --exclude .vercel --exclude .env.local"
+
+# Files deployed from this repo. Edit the repo copy; ~ holds symlinks.
+[dotfiles]
+"~/.zshenv" = { source = "~/code/dotfiles/zsh/zshenv", mode = "symlink" }
+"~/.zprofile" = { source = "~/code/dotfiles/zsh/zprofile", mode = "symlink" }
+"~/.zshrc" = { source = "~/code/dotfiles/zsh/zshrc", mode = "symlink" }
+"~/.config/zsh/plugins.txt" = { source = "~/code/dotfiles/zsh/plugins.txt", mode = "symlink" }
+"~/.config/atuin/config.toml" = { source = "~/code/dotfiles/atuin/config.toml", mode = "symlink" }
+"~/.config/herdr/config.toml" = { source = "~/code/dotfiles/herdr/config.toml", mode = "symlink" }
