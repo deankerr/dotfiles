@@ -1,0 +1,28 @@
+# Built-in "patina" theme, with valid/missing commands as green/red like
+# zsh-syntax-highlighting. Patina's cyan/red are both pink in Vesper.
+# Strings move to yellow, so variables and escapes move to cyan.
+
+"comment" = "#a0a0a0"
+
+"string" = "yellow"
+"keyword.operator.regexp" = "yellow"
+"constant.character.escape" = "cyan"
+"constant.numeric.integer.decimal.file-descriptor" = "yellow"
+
+"variable.parameter" = "magenta"
+"variable.other" = "cyan"
+"punctuation.definition.variable" = "cyan"
+"variable.language.tilde" = "magenta"
+
+"variable.function" = "green"
+"keyword" = "blue"
+"storage" = "blue"
+"support" = "green"
+"entity.name.function" = "yellow"
+"punctuation.section" = "yellow"
+"meta.group.expansion.history" = "yellow"
+"meta.group.expansion.command.parens" = {}
+
+"dynamic.callable" = "green"
+"dynamic.callable.missing" = { foreground = "red", bold = true }
+"dynamic.path" = { underline = true }

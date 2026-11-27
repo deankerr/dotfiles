@@ -86,3 +86,5 @@ rsync-web = "rsync --compress --human-readable --links --partial --progress --re
 "~/.config/zsh/plugins.txt" = { source = "~/code/dotfiles/zsh/plugins.txt", mode = "symlink" }
 "~/.config/atuin/config.toml" = { source = "~/code/dotfiles/atuin/config.toml", mode = "symlink" }
 "~/.config/herdr/config.toml" = { source = "~/code/dotfiles/herdr/config.toml", mode = "symlink" }
+"~/.config/zsh-patina/config.toml" = { source = "~/code/dotfiles/zsh-patina/config.toml", mode = "symlink" }
+"~/.config/zsh-patina/theme.toml" = { source = "~/code/dotfiles/zsh-patina/theme.toml", mode = "symlink" }
